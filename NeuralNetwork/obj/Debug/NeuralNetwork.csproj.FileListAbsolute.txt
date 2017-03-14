@@ -1,0 +1,9 @@
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\bin\Debug\NeuralNetwork.exe.config
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csprojResolveAssemblyReference.cache
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.Properties.Resources.resources
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.csproj.GenerateResource.Cache
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\bin\Debug\NeuralNetwork.exe
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\bin\Debug\NeuralNetwork.pdb
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.exe
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.pdb
+C:\Users\amahdavi\Desktop\NeuralNetwork\NeuralNetwork\obj\Debug\NeuralNetwork.Form1.resources
