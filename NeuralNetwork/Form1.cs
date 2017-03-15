@@ -21,7 +21,7 @@ namespace NeuralNetwork
             input.Add(0);
             input.Add(1);
             N.receiveInput(input);
-            N.forwardPropagation();
+            N.feedForward_H_Theta();
         }
 
         private void Form1_Load(object sender, EventArgs e)
