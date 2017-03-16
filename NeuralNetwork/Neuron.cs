@@ -13,6 +13,7 @@ namespace NeuralNetwork
         double a;//value of a neuron
         double z;//input of a neuron
         double delta;
+        double b;
         double gPrime;
         public Neuron()
         { }
@@ -22,6 +23,7 @@ namespace NeuralNetwork
             this.a = N.a;
             this.z = N.Z;
             this.delta = N.delta;
+            this.b = N.b;
         }
         public double A 
         {
@@ -43,6 +45,11 @@ namespace NeuralNetwork
             get { return t; }
             set { t = value; }
         }
+        public double B
+        {
+            get { return b; }
+            set { b = value; }
+        }
         public double Delta
         {
             get { return delta; }
@@ -57,6 +64,7 @@ namespace NeuralNetwork
                 a = a = sigmoid(z);
             if (t == Type.input)
                 a = z;
+            gPrimeFunction();
         }
         public void gPrimeFunction()
         {

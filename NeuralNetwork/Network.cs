@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace NeuralNetwork
 {
@@ -33,9 +34,19 @@ namespace NeuralNetwork
             for (int i = 0; i < _layerNumber; i++)
             {
                 List<Neuron> neuronTempList = new List<Neuron>();
+                Random rnd = new Random();
                 for (int j = 0; j < nodeNumebr[i]; j++)
                 {
+                    Thread.Sleep(50);
                     Neuron N = new Neuron();
+                    if (i == 0)
+                        N.T = Neuron.Type.input;
+                    else if (i == layerNumber - 1)
+                        N.T = Neuron.Type.output;
+                    else
+                        N.T = Neuron.Type.hidden;
+                    int rand = rnd.Next(1, 100);
+                    N.B = (double)(rand / 100.0);
                     neuronTempList.Add(N);
                 }
                 neuronList.Add(neuronTempList);
@@ -43,16 +54,19 @@ namespace NeuralNetwork
         }
         private void initializeThetaList()
         {
-            double epsilon = 0.1;
             for (int i = 0; i < neuronList.Count - 1; i++)
             {
                 List<List<double>> twoDTheta = new List<List<double>>();
                 for (int j = 0; j < neuronList[i].Count; j++)
                 {
                     List<double> oneDTheta = new List<double>();
+                    Random rnd = new Random();
                     for (int k = 0; k < neuronList[i + 1].Count; k++)
                     {
-                        oneDTheta.Add(epsilon);
+
+                        Thread.Sleep(50);
+                        int rand = rnd.Next(1, 100);
+                        oneDTheta.Add((double)(rand/100.0));
                     }
                     twoDTheta.Add(oneDTheta);
                 }
@@ -96,7 +110,7 @@ namespace NeuralNetwork
         {
             try
             {
-                neuronList[indexi][layer] = new Neuron(N);
+                neuronList[layer][indexi] = new Neuron(N);
             }
             catch (System.IndexOutOfRangeException e)
             {
@@ -142,6 +156,10 @@ namespace NeuralNetwork
         }
         public void feedForward_H_Theta()
         {
+                for (int j = 0; j < neuronList[0].Count; j++)
+                {
+                    neuronList[0][j].g(neuronList[0][j].Z);
+                }
             for (int i = 0; i < layerNumber - 1; i++)
             {
                 for (int j = 0; j < neuronList[i + 1].Count; j++)
@@ -151,8 +169,7 @@ namespace NeuralNetwork
                     {
                         value += thetaList[i][k][j] * neuronList[i][k].A;
                     }
-                    neuronList[i + 1][j].Z = value;
-                    neuronList[i + 1][j].g(value);
+                    neuronList[i + 1][j].g(value + neuronList[i + 1][j].B);
                 }
             }
 
@@ -167,33 +184,47 @@ namespace NeuralNetwork
         private void outPutLayerDeltaCalculation()
         {
             for (int i = 0; i < neuronList[layerNumber - 1].Count; i++)
-                neuronList[layerNumber - 1][i].Delta = neuronList[layerNumber - 1][i].A - outPutList[i];//the last row delta
+                neuronList[layerNumber - 1][i].Delta = (outPutList[i] - neuronList[layerNumber - 1][i].A) * neuronList[layerNumber - 1][i].A * (1 - neuronList[layerNumber - 1][i].A);//the last row delta
+                //neuronList[layerNumber - 1][i].Delta = neuronList[layerNumber - 1][i].A - outPutList[i];//the last row delta
         }
         private void hiddenLayerDeltaCalculation()
         {
-            for (int i = layerNumber - 2; i > 0; i--)
+            for (int i = layerNumber - 2; i > -1; i--)
             {
                 for (int j = 0; j < neuronList[i].Count; j++)
                 {
+                    double temp = 0;
                     for (int k = 0; k < neuronList[i + 1].Count; k++)
                     {
-                        neuronList[i][j].Delta += thetaList[i][j][k];
+                       // temp += thetaList[i][j][k]*neuronList[i+1][k].Delta;
+                        temp += thetaList[i][j][k] * neuronList[i + 1][k].Delta;
+
                     }
-                    neuronList[i][j].Delta *= neuronList[i][j].GPrime;
+                   // neuronList[i][j].Delta = temp*neuronList[i][j].GPrime;
+                    neuronList[i][j].Delta = temp * (1 - neuronList[i][j].A) * (neuronList[i][j].A);
                 }
             }
         }
         private void accumulateGradient()//multiply delta in a
         {
-            for (int i = 0; i < layerNumber; i++)
+            for (int i = layerNumber - 2; i > -1; i--)
             {
                 for (int j = 0; j < neuronList[i].Count; j++)
                 {
                     for (int k = 0; k < neuronList[i + 1].Count; k++)
                     {
-                        neuronList[i][j].Delta += thetaList[i][j][k];
+                        thetaList[i][j][k]+=0.1*( neuronList[i][j].A * neuronList[i+1][k].Delta);
+                        neuronList[i][j].B += 0.1*neuronList[i+1][k].Delta;
                     }
-                    neuronList[i][j].Delta *= neuronList[i][j].GPrime;
+                   
+                }
+            }
+
+            for (int i = layerNumber - 1; i > -1; i--)
+            {
+                for (int j = 0; j < neuronList[i].Count; j++)
+                {
+                        neuronList[i][j].B += 0.1 * neuronList[i][j].Delta;
                 }
             }
         }
