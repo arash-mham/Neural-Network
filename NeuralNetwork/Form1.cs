@@ -62,7 +62,7 @@ namespace NeuralNetwork
                 input.Clear();
 
 
-                if (Math.Pow(x,1) > y)//you can define any function here and see the plot
+                if (Math.Pow(x,3) > y)//you can define any function here and see the plot
                 {
                     input.Add(1);
                     input.Add(0);
